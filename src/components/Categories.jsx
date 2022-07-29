@@ -20,7 +20,7 @@ function Categories() {
     <div className="categories">
       <ul>
         {categories.map((value, idx) => (
-          <li
+          <li key={idx}
             onClick={() => {
               onCategoryClick(idx);
             }}
