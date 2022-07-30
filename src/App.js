@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Categories from "./components/Categories";
 import Sort from "./components/Sort";
 import PizzaBlock from "./components/PizzaBlock";
+import Skeleton from "./components/PizzaBlock/Skeleton"
 import axios from "axios";
 
 function App() {
