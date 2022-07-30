@@ -1,13 +1,23 @@
 import "./scss/app.scss";
+import React, { useEffect } from "react";
 
 import Header from "./components/Header";
 import Categories from "./components/Categories";
 import Sort from "./components/Sort";
 import PizzaBlock from "./components/PizzaBlock";
-
-import pizzas from "./assets/pizzas.json";
+import axios from "axios";
 
 function App() {
+  const [pizzas, setPizzas] = React.useState([]);
+
+  useEffect(() => {
+    axios.get(`https://62e3efe83c89b95396d4450b.mockapi.io/pizzas`)
+      .then((response) => {
+        const { data } = response;
+        setPizzas(data);
+      });
+  }, []);
+
   return (
     <div className="wrapper">
       <Header />
@@ -20,7 +30,7 @@ function App() {
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
             {pizzas.map((pizza) => (
-              <PizzaBlock key={pizza.id}  {...pizza} />
+              <PizzaBlock key={pizza.id} {...pizza} />
             ))}
           </div>
         </div>
