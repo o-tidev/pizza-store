@@ -23,6 +23,7 @@ function Home() {
       alert("Oops, error while loading pizzas ;(");
       alert(error.message);
     }
+    window.scrollTo(0, 0)
   }, []);
 
   return (
