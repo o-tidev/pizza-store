@@ -26,7 +26,7 @@ function Sort() {
             fill="#2C2C2C"
           />
         </svg>
-        <b>Сортировка по:</b>
+        <b>Sort by:</b>
         <span onClick={() => setIsOpened(!isOpened)}>{list[isActive]}</span>
       </div>
       {isOpened && (

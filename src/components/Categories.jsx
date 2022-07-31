@@ -4,12 +4,12 @@ function Categories() {
   const [activeIndex, setActiveIndex] = React.useState(0);
 
   const categories = [
-    "Kaikki",
-    "Liha",
-    "Kasvis",
-    "Grilli",
-    "Mausteinen",
-    "Paistettu",
+    "All",
+    "Meat",
+    "Veggie",
+    "Grill",
+    "Spicy",
+    "Baked",
   ];
 
   function onCategoryClick(idx) {
