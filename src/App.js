@@ -10,18 +10,20 @@ import axios from "axios";
 
 function App() {
   const [pizzas, setPizzas] = React.useState([]);
-  const [loading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   useEffect(() => {
     try {
-      axios.get(`https://62e3efe83c89b95396d4450b.mockapi.io/pizzas`)
+      axios
+        .get(`https://62e3efe83c89b95396d4450b.mockapi.io/pizzas`)
         .then((response) => {
           const { data } = response;
           setPizzas(data);
+          setIsLoading(false)
         });
     } catch (error) {
-      alert('Oops, error while loading pizzas ;(')
-      alert(error.message)
+      alert("Oops, error while loading pizzas ;(");
+      alert(error.message);
     }
   }, []);
 
@@ -36,9 +38,9 @@ function App() {
           </div>
           <h2 className="content__title">All pizzas</h2>
           <div className="content__items">
-            {pizzas.map((pizza) => (
-              <PizzaBlock key={pizza.id} {...pizza} />
-            ))}
+            {isLoading
+              ? [...new Array(9)].map((_, idx) => <Skeleton className="pizza-block" key={idx} />)
+              : pizzas.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)}
           </div>
         </div>
       </div>
