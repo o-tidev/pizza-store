@@ -1,13 +1,25 @@
 import React from "react";
 
-function Sort() {
-  const list = ["popularity", "price", "alphabetical"];
-
+function Sort({ sortType, onSortClick }) {
   const [isOpened, setIsOpened] = React.useState(false);
-  const [isActive, setIsActive] = React.useState(0);
+
+  const list = [
+    {
+      name: "popularity",
+      sortKey: "rating",
+    },
+    {
+      name: "price",
+      sortKey: "price",
+    },
+    {
+      name: "aplhabetical",
+      sortKey: "title",
+    },
+  ];
 
   let setActive = (idx) => {
-    setIsActive(idx);
+    onSortClick(idx);
     setIsOpened(!isOpened);
   };
 
@@ -27,18 +39,18 @@ function Sort() {
           />
         </svg>
         <b>Sort by:</b>
-        <span onClick={() => setIsOpened(!isOpened)}>{list[isActive]}</span>
+        <span onClick={() => setIsOpened(!isOpened)}>{sortType.name}</span>
       </div>
       {isOpened && (
         <div className="sort__popup">
           <ul>
-            {list.map((name, idx) => (
+            {list.map((obj, idx) => (
               <li
                 key={idx}
-                className={isActive === idx ? "active" : ""}
-                onClick={() => setActive(idx)}
+                className={sortType.sortKey === obj.sortKey ? "active" : ""}
+                onClick={() => setActive(obj)}
               >
-                {name}
+                {obj.name}
               </li>
             ))}
           </ul>
