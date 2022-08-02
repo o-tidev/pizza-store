@@ -11,16 +11,20 @@ function Home() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [categoryId, setCategoryId] = React.useState(0);
   const [sortType, setSortType] = React.useState({
-    name: 'popularity',
-    sortKey: 'rating'
+    name: "popularity",
+    sortKey: "rating",
   });
-  
+
   useEffect(() => {
+    const order = sortType.sortKey.includes("-") ? "desc" : "asc";
+    const sortBy = sortType.sortKey.replace("-", "");
+    const category = categoryId > 0 ? `category=${categoryId}` : "";
+
     try {
       setIsLoading(true);
       axios
         .get(
-          `https://62e3efe83c89b95396d4450b.mockapi.io/pizzas?${categoryId > 0 ? `category=${categoryId}` : ''}&sortBy=${sortType.sortKey}&order=desc`
+          `https://62e3efe83c89b95396d4450b.mockapi.io/pizzas?${category}&sortBy=${sortBy}&order=${order}`
         )
         .then((response) => {
           const { data } = response;
@@ -34,7 +38,6 @@ function Home() {
     window.scrollTo(0, 0);
   }, [categoryId, sortType]);
 
-
   return (
     <>
       <div className="content__top">
@@ -42,10 +45,7 @@ function Home() {
           categoryId={categoryId}
           onCategorylClick={(idx) => setCategoryId(idx)}
         />
-        <Sort
-          sortType={sortType}
-          onSortClick={(idx) => setSortType(idx)}
-        />
+        <Sort sortType={sortType} onSortClick={(idx) => setSortType(idx)} />
       </div>
       <h2 className="content__title">All pizzas</h2>
       <div className="content__items">

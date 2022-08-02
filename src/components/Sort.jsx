@@ -5,16 +5,28 @@ function Sort({ sortType, onSortClick }) {
 
   const list = [
     {
-      name: "popularity",
+      name: "popularity (asc)",
       sortKey: "rating",
     },
     {
-      name: "price",
+      name: "popularity (desc)",
+      sortKey: "-rating",
+    },
+    {
+      name: "price (asc)",
       sortKey: "price",
     },
     {
-      name: "aplhabetical",
+      name: "price (desc)",
+      sortKey: "-price",
+    },
+    {
+      name: "aplhabetical (asc)",
       sortKey: "title",
+    },
+    {
+      name: "aplhabetical (desc)",
+      sortKey: "-title",
     },
   ];
 
