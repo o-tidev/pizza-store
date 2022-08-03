@@ -6,7 +6,7 @@ import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import axios from "axios";
 
-function Home() {
+function Home({ searchValue }) {
   const [pizzas, setPizzas] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [categoryId, setCategoryId] = React.useState(0);
@@ -14,6 +14,16 @@ function Home() {
     name: "popularity",
     sortKey: "rating",
   });
+
+  const skeleton = [...new Array(9)].map((_, idx) => (
+    <Skeleton className="pizza-block" key={idx} />
+  ));
+  const items = pizzas.filter((obj) => {
+    if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
+      return true
+    }
+    return false
+  }).map((obj) => <PizzaBlock key={obj.id} {...obj} />);
 
   useEffect(() => {
     const order = sortType.sortKey.includes("-") ? "desc" : "asc";
@@ -48,13 +58,7 @@ function Home() {
         <Sort sortType={sortType} onSortClick={(idx) => setSortType(idx)} />
       </div>
       <h2 className="content__title">All pizzas</h2>
-      <div className="content__items">
-        {isLoading
-          ? [...new Array(9)].map((_, idx) => (
-              <Skeleton className="pizza-block" key={idx} />
-            ))
-          : pizzas.map((pizza) => <PizzaBlock key={pizza.id} {...pizza} />)}
-      </div>
+      <div className="content__items">{isLoading ? skeleton : items }</div>
     </>
   );
 }
