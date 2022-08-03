@@ -6,6 +6,7 @@ import Home from "./Pages/Home";
 import NotFound from "./Pages/NotFound";
 import Cart from "./Pages/Cart";
 
+
 import { Route, Routes } from "react-router-dom";
 
 function App() {

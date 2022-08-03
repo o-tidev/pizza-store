@@ -5,11 +5,13 @@ import Sort from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import axios from "axios";
+import Pagination from "../components/Pagination/Pagination";
 
 function Home({ searchValue }) {
   const [pizzas, setPizzas] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [categoryId, setCategoryId] = React.useState(0);
+  const [currentPage, setCurrentPage] = React.useState(1);
   const [sortType, setSortType] = React.useState({
     name: "popularity",
     sortKey: "rating",
@@ -18,23 +20,19 @@ function Home({ searchValue }) {
   const skeleton = [...new Array(9)].map((_, idx) => (
     <Skeleton className="pizza-block" key={idx} />
   ));
-  const items = pizzas.filter((obj) => {
-    if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
-      return true
-    }
-    return false
-  }).map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+  const items = pizzas.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
 
   useEffect(() => {
     const order = sortType.sortKey.includes("-") ? "desc" : "asc";
     const sortBy = sortType.sortKey.replace("-", "");
     const category = categoryId > 0 ? `category=${categoryId}` : "";
+    const search = searchValue ? `&search=${searchValue}` : "";
 
     try {
       setIsLoading(true);
       axios
         .get(
-          `https://62e3efe83c89b95396d4450b.mockapi.io/pizzas?${category}&sortBy=${sortBy}&order=${order}`
+          `https://62e3efe83c89b95396d4450b.mockapi.io/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
         )
         .then((response) => {
           const { data } = response;
@@ -46,7 +44,7 @@ function Home({ searchValue }) {
       alert(error.message);
     }
     window.scrollTo(0, 0);
-  }, [categoryId, sortType]);
+  }, [categoryId, sortType, searchValue, currentPage]);
 
   return (
     <>
@@ -58,7 +56,8 @@ function Home({ searchValue }) {
         <Sort sortType={sortType} onSortClick={(idx) => setSortType(idx)} />
       </div>
       <h2 className="content__title">All pizzas</h2>
-      <div className="content__items">{isLoading ? skeleton : items }</div>
+      <div className="content__items">{isLoading ? skeleton : items}</div>
+      <Pagination onPageChange={number  => setCurrentPage(number)} />
     </>
   );
 }
