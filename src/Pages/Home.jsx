@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
@@ -9,11 +10,15 @@ import Pagination from "../components/Pagination/Pagination";
 import { AppContext } from "../App";
 
 function Home() {
-  const { searchValue } = React.useContext(AppContext)
+  const categoryId = useSelector(state => state.filterSlice.categoryId)
+  console.log(categoryId);
+  const setCategoryId = () => {}
+
+  const { searchValue } = React.useContext(AppContext);
 
   const [pizzas, setPizzas] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [categoryId, setCategoryId] = React.useState(0);
+  // const [categoryId, setCategoryId] = React.useState(0);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [sortType, setSortType] = React.useState({
     name: "popularity",
@@ -60,7 +65,7 @@ function Home() {
       </div>
       <h2 className="content__title">All pizzas</h2>
       <div className="content__items">{isLoading ? skeleton : items}</div>
-      <Pagination onPageChange={(number)  => setCurrentPage(number)} />
+      <Pagination onPageChange={(number) => setCurrentPage(number)} />
     </>
   );
 }
