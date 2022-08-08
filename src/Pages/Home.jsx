@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
@@ -9,10 +9,15 @@ import axios from "axios";
 import Pagination from "../components/Pagination/Pagination";
 import { AppContext } from "../App";
 
+import { setCategoryId } from "../redux/slices/filterSlice";
+
 function Home() {
-  const categoryId = useSelector(state => state.filterSlice.categoryId)
-  console.log(categoryId);
-  const setCategoryId = () => {}
+  const dispatch = useDispatch();
+  const categoryId = useSelector((state) => state.filterSlice.categoryId);
+
+  const onCategorylClick = (idx) => {
+    dispatch(setCategoryId(idx));
+  };
 
   const { searchValue } = React.useContext(AppContext);
 
@@ -59,7 +64,7 @@ function Home() {
       <div className="content__top">
         <Categories
           categoryId={categoryId}
-          onCategorylClick={(idx) => setCategoryId(idx)}
+          onCategorylClick={onCategorylClick}
         />
         <Sort sortType={sortType} onSortClick={(idx) => setSortType(idx)} />
       </div>
