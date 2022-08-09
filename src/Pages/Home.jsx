@@ -14,6 +14,7 @@ import { setCategoryId } from "../redux/slices/filterSlice";
 function Home() {
   const dispatch = useDispatch();
   const categoryId = useSelector((state) => state.filterSlice.categoryId);
+  const sortType = useSelector((state) => state.filterSlice.sort.sortProperty);
 
   const onCategorylClick = (idx) => {
     dispatch(setCategoryId(idx));
@@ -23,12 +24,7 @@ function Home() {
 
   const [pizzas, setPizzas] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  // const [categoryId, setCategoryId] = React.useState(0);
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [sortType, setSortType] = React.useState({
-    name: "popularity",
-    sortKey: "rating",
-  });
 
   const skeleton = [...new Array(9)].map((_, idx) => (
     <Skeleton className="pizza-block" key={idx} />
@@ -36,8 +32,8 @@ function Home() {
   const items = pizzas.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
 
   useEffect(() => {
-    const order = sortType.sortKey.includes("-") ? "desc" : "asc";
-    const sortBy = sortType.sortKey.replace("-", "");
+    const order = sortType.includes("-") ? "desc" : "asc";
+    const sortBy = sortType.replace("-", "");
     const category = categoryId > 0 ? `category=${categoryId}` : "";
     const search = searchValue ? `&search=${searchValue}` : "";
 
@@ -66,7 +62,7 @@ function Home() {
           categoryId={categoryId}
           onCategorylClick={onCategorylClick}
         />
-        <Sort sortType={sortType} onSortClick={(idx) => setSortType(idx)} />
+        <Sort />
       </div>
       <h2 className="content__title">All pizzas</h2>
       <div className="content__items">{isLoading ? skeleton : items}</div>
