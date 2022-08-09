@@ -14,7 +14,7 @@ import { setCategoryId } from "../redux/slices/filterSlice";
 function Home() {
   const dispatch = useDispatch();
   const categoryId = useSelector((state) => state.filterSlice.categoryId);
-  const sortType = useSelector((state) => state.filterSlice.sort.sortProperty);
+  const sortType = useSelector((state) => state.filterSlice.sort.sortKey);
 
   const onCategorylClick = (idx) => {
     dispatch(setCategoryId(idx));
@@ -32,6 +32,8 @@ function Home() {
   const items = pizzas.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
 
   useEffect(() => {
+    console.log(typeof sortType);
+    console.log(sortType);
     const order = sortType.includes("-") ? "desc" : "asc";
     const sortBy = sortType.replace("-", "");
     const category = categoryId > 0 ? `category=${categoryId}` : "";

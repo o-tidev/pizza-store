@@ -4,7 +4,7 @@ const initialState = {
   categoryId: 0,
   sort: {
     name: "popularity",
-    sortProperty: "rating",
+    sortKey: "rating",
   },
 };
 
@@ -17,6 +17,7 @@ const filterSlice = createSlice({
     },
     setSort(state, action) {
       state.sort = action.payload;
+      console.log(action.payload);
     },
   },
 });
