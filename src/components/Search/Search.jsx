@@ -1,9 +1,13 @@
 import React from "react";
 import styles from "./Search.module.scss";
-import { AppContext } from '../../App'
+import { AppContext } from "../../App";
 
 function Search() {
   const { searchValue, setSearchValue } = React.useContext(AppContext);
+  const onClearClick = () => {
+    setSearchValue("");
+    document.querySelector("input").focus();
+  };
 
   return (
     <div className={styles.root}>
@@ -50,7 +54,7 @@ function Search() {
       />
       {searchValue && (
         <svg
-          onClick={() => setSearchValue("")}
+          onClick={onClearClick}
           className={styles.delete}
           height="14px"
           version="1.1"

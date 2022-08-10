@@ -32,8 +32,6 @@ function Home() {
   const items = pizzas.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
 
   useEffect(() => {
-    console.log(typeof sortType);
-    console.log(sortType);
     const order = sortType.includes("-") ? "desc" : "asc";
     const sortBy = sortType.replace("-", "");
     const category = categoryId > 0 ? `category=${categoryId}` : "";
