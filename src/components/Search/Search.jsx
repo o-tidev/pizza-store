@@ -4,9 +4,11 @@ import { AppContext } from "../../App";
 
 function Search() {
   const { searchValue, setSearchValue } = React.useContext(AppContext);
+  const inputReference = React.useRef();
+
   const onClearClick = () => {
     setSearchValue("");
-    document.querySelector("input").focus();
+    inputReference.current.focus()
   };
 
   return (
@@ -46,6 +48,7 @@ function Search() {
         />
       </svg>
       <input
+        ref={inputReference}
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
         type="text"
@@ -67,10 +70,10 @@ function Search() {
           <defs />
           <g
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
             id="Page-1"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
           >
             <g
               fill="#000000"
