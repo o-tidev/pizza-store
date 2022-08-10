@@ -1,14 +1,29 @@
 import React from "react";
+import debounce from "lodash.debounce";
 import styles from "./Search.module.scss";
 import { AppContext } from "../../App";
 
 function Search() {
-  const { searchValue, setSearchValue } = React.useContext(AppContext);
+  const [localValue, setLocalValue] = React.useState("");
+  const { setSearchValue } = React.useContext(AppContext);
   const inputReference = React.useRef();
 
   const onClearClick = () => {
     setSearchValue("");
-    inputReference.current.focus()
+    setLocalValue("");
+    inputReference.current.focus();
+  };
+
+  const onUpdateValue = React.useCallback(
+    debounce((value) => {
+      setSearchValue(value);
+    }, 550),
+    []
+  );
+
+  const onRequest = (event) => {
+    setLocalValue(event.target.value);
+    onUpdateValue(event.target.value);
   };
 
   return (
@@ -49,13 +64,13 @@ function Search() {
       </svg>
       <input
         ref={inputReference}
-        value={searchValue}
-        onChange={(e) => setSearchValue(e.target.value)}
+        value={localValue}
+        onChange={onRequest}
         type="text"
         className={styles.input}
         placeholder="Search..."
       />
-      {searchValue && (
+      {localValue && (
         <svg
           onClick={onClearClick}
           className={styles.delete}
