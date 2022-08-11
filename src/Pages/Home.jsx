@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import qs from "qs";
 
+import { useNavigate } from "react-router-dom";
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock";
@@ -12,6 +14,7 @@ import { AppContext } from "../App";
 import { setCategoryId, setCurrentPage } from "../redux/slices/filterSlice";
 
 function Home() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const categoryId = useSelector((state) => state.filterSlice.categoryId);
   const sortType = useSelector((state) => state.filterSlice.sort.sortKey);
@@ -57,6 +60,16 @@ function Home() {
       alert(error.message);
     }
     window.scrollTo(0, 0);
+  }, [categoryId, sortType, searchValue, currentPage]);
+
+  React.useEffect(() => {
+    const queryString = qs.stringify({
+      sortProperty: sortType,
+      categoryId,
+      currentPage
+    })
+    console.log(queryString);
+    navigate(`?${queryString}`)
   }, [categoryId, sortType, searchValue, currentPage]);
 
   return (
