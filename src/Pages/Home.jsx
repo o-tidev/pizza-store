@@ -20,6 +20,9 @@ import {
 function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isSearch = React.useRef(false);
+  const isMounted = React.useRef(false);
+
   const categoryId = useSelector((state) => state.filterSlice.categoryId);
   const sortType = useSelector((state) => state.filterSlice.sort.sortKey);
   const currentPage = useSelector((state) => state.filterSlice.currentPage);
@@ -42,22 +45,7 @@ function Home() {
   ));
   const items = pizzas.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
 
-  useEffect(() => {
-    if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
-
-      const sort = list.find((obj) => obj.sortKey === params.sortKey);
-
-      dispatch(
-        setFilters({
-          ...params,
-          sort,
-        })
-      );
-    }
-  }, []);
-
-  useEffect(() => {
+  const fetchPizzas = () => {
     const order = sortType.includes("-") ? "desc" : "asc";
     const sortBy = sortType.replace("-", "");
     const category = categoryId > 0 ? `category=${categoryId}` : "";
@@ -79,16 +67,42 @@ function Home() {
       alert(error.message);
     }
     window.scrollTo(0, 0);
-  }, [categoryId, sortType, searchValue, currentPage]);
+  };
 
   React.useEffect(() => {
-    const queryString = qs.stringify({
-      sortType,
-      categoryId,
-      currentPage,
-    });
-    console.log(queryString);
-    navigate(`?${queryString}`);
+    if (isMounted.current) {
+      const queryString = qs.stringify({
+        sortType,
+        categoryId,
+        currentPage,
+      });
+      navigate(`?${queryString}`);
+    }
+    isMounted.current = true;
+  }, [categoryId, sortType, searchValue, currentPage]);
+
+  useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+
+      const sort = list.find((obj) => obj.sortKey === params.sortKey);
+
+      dispatch(
+        setFilters({
+          ...params,
+          sort,
+        })
+      );
+      isSearch.current = true;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isSearch.current) {
+      fetchPizzas();
+    }
+
+    isSearch.current = false;
   }, [categoryId, sortType, searchValue, currentPage]);
 
   return (
