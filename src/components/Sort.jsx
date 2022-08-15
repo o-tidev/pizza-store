@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useLinkClickHandler } from "react-router-dom";
 import { setSort } from "../redux/slices/filterSlice";
 
 export const list = [
@@ -32,16 +33,31 @@ export const list = [
 function Sort() {
   const dispatch = useDispatch();
   const sort = useSelector((state) => state.filterSlice.sort);
+  const sortReference = React.useRef();
 
   const [isOpened, setIsOpened] = React.useState(false);
 
   let setActive = (object) => {
-    dispatch(setSort(object))
+    dispatch(setSort(object));
     setIsOpened(!isOpened);
   };
 
+  React.useEffect(() => {
+    const outsideClickHandler = (e) => {
+      if (!e.path.includes(sortReference.current)) {
+        setIsOpened(false);
+        console.log('clickie');
+      }
+    };
+    document.body.addEventListener("click", outsideClickHandler);
+
+    return () => {
+      document.body.removeEventListener("click", outsideClickHandler);
+    };
+  }, []);
+
   return (
-    <div className="sort">
+    <div ref={sortReference} className="sort">
       <div className="sort__label">
         <svg
           width="10"
