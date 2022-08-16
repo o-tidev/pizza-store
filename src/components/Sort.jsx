@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useLinkClickHandler } from "react-router-dom";
 import { setSort } from "../redux/slices/filterSlice";
 
 export const list = [
