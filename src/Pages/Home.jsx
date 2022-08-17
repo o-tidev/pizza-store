@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import qs from "qs";
 import { useNavigate } from "react-router-dom";
+
+import qs from "qs";
+import axios from "axios";
 
 import Categories from "../components/Categories";
 import Sort, { list } from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
-import axios from "axios";
 import Pagination from "../components/Pagination/Pagination";
 import { AppContext } from "../App";
 

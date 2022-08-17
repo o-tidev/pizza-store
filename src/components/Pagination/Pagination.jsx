@@ -5,6 +5,9 @@ import ReactPaginate from "react-paginate";
 function Pagination({ currentPage, onPageChange }) {
   return (
     <>
+      
+      {/* HERE GOES YOUR HTML */}
+
       <ReactPaginate
         className={styles.root}
         breakLabel="..."
