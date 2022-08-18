@@ -46,27 +46,23 @@ function Home() {
   ));
   const items = pizzas.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
 
-  const fetchPizzas = () => {
+  const fetchPizzas = async () => {
     const order = sortType.includes("-") ? "desc" : "asc";
     const sortBy = sortType.replace("-", "");
     const category = categoryId > 0 ? `category=${categoryId}` : "";
     const search = searchValue ? `&search=${searchValue}` : "";
 
     try {
-      setIsLoading(true);
-      axios
-        .get(
-          `https://62e3efe83c89b95396d4450b.mockapi.io/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-        )
-        .then((response) => {
-          const { data } = response;
-          setPizzas(data);
-          setIsLoading(false);
-        });
+      const response = await axios.get(
+        `https://62e3efe83c89b95396d4450b.mockapi.io/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
+      );
+      setPizzas(response.data);
+      setIsLoading(false);
     } catch (error) {
-      alert("Oops, error while loading pizzas ;(");
-      alert(error.message);
+      setIsLoading(false);
+      console.log(error.message);
     }
+
     window.scrollTo(0, 0);
   };
 
