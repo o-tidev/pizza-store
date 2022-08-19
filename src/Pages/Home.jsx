@@ -9,14 +9,14 @@ import Sort, { list } from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination/Pagination";
-import { AppContext } from "../App";
 
 import {
+  filterSortSelector,
   setCategoryId,
   setCurrentPage,
   setFilters,
 } from "../redux/slices/filterSlice";
-import { fetchPizzas } from "../redux/slices/pizzaSlice";
+import { fetchPizzas, pizzaDataSelector } from "../redux/slices/pizzaSlice";
 
 function Home() {
   const navigate = useNavigate();
@@ -27,7 +27,9 @@ function Home() {
   const categoryId = useSelector((state) => state.filterSlice.categoryId);
   const sortType = useSelector((state) => state.filterSlice.sort.sortKey);
   const currentPage = useSelector((state) => state.filterSlice.currentPage);
-  const { pizzas, status } = useSelector((state) => state.pizzaSlice);
+  const { searchValue } = useSelector((state) => state.filterSlice);
+
+  const { pizzas, status } = useSelector(pizzaDataSelector);
 
   const onCategorylClick = (idx) => {
     dispatch(setCategoryId(idx));
@@ -37,7 +39,7 @@ function Home() {
     dispatch(setCurrentPage(num));
   };
 
-  const { searchValue } = React.useContext(AppContext);
+  // const { searchValue } = React.useContext(AppContext);
 
   // const [pizzas, setPizzas] = React.useState([]);
   // const [isLoading, setIsLoading] = React.useState(true);
@@ -115,7 +117,8 @@ function Home() {
       {status === "error" ? (
         <div className="content__error-info">
           <h2>We caught and error 🥺</h2> <br />{" "}
-          <span>Please, try again later, we couldn't load pitszzaz ;( </span> <br />
+          <span>Please, try again later, we couldn't load pitszzaz ;( </span>{" "}
+          <br />
           <span>No nom nom nom today</span>
         </div>
       ) : (

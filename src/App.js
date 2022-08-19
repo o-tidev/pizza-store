@@ -8,13 +8,10 @@ import Cart from "./Pages/Cart";
 
 import { Route, Routes } from "react-router-dom";
 
-export const AppContext = React.createContext();
 
 function App() {
-  const [searchValue, setSearchValue] = React.useState("");
   return (
     <div className="wrapper">
-      <AppContext.Provider value={{ searchValue, setSearchValue }}>
         <Header />
         <div className="content">
           <div className="container">
@@ -25,7 +22,6 @@ function App() {
             </Routes>
           </div>
         </div>
-      </AppContext.Provider>
     </div>
   );
 }

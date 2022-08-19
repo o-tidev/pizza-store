@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setSort } from "../redux/slices/filterSlice";
+import { filterSelector, setSort } from "../redux/slices/filterSlice";
 
 export const list = [
   {
@@ -31,7 +31,7 @@ export const list = [
 
 function Sort() {
   const dispatch = useDispatch();
-  const sort = useSelector((state) => state.filterSlice.sort);
+  const sort = useSelector(filterSelector);
   const sortReference = React.useRef();
 
   const [isOpened, setIsOpened] = React.useState(false);
@@ -45,7 +45,7 @@ function Sort() {
     const outsideClickHandler = (e) => {
       if (!e.path.includes(sortReference.current)) {
         setIsOpened(false);
-        console.log('clickie');
+        console.log("clickie");
       }
     };
     document.body.addEventListener("click", outsideClickHandler);
