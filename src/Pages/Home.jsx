@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import qs from "qs";
-import axios from "axios";
 
 import Categories from "../components/Categories";
 import Sort, { list } from "../components/Sort";
@@ -17,7 +16,7 @@ import {
   setCurrentPage,
   setFilters,
 } from "../redux/slices/filterSlice";
-import { addItems } from "../redux/slices/pizzaSlice";
+import { fetchPizzas } from "../redux/slices/pizzaSlice";
 
 function Home() {
   const navigate = useNavigate();
@@ -28,7 +27,7 @@ function Home() {
   const categoryId = useSelector((state) => state.filterSlice.categoryId);
   const sortType = useSelector((state) => state.filterSlice.sort.sortKey);
   const currentPage = useSelector((state) => state.filterSlice.currentPage);
-  const pizzas = useSelector((state) => state.pizzaSlice.items);
+  const { pizzas, status } = useSelector((state) => state.pizzaSlice);
 
   const onCategorylClick = (idx) => {
     dispatch(setCategoryId(idx));
@@ -41,29 +40,28 @@ function Home() {
   const { searchValue } = React.useContext(AppContext);
 
   // const [pizzas, setPizzas] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+  // const [isLoading, setIsLoading] = React.useState(true);
 
   const skeleton = [...new Array(9)].map((_, idx) => (
     <Skeleton className="pizza-block" key={idx} />
   ));
   const items = pizzas.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
 
-  const fetchPizzas = async () => {
+  const getPizzas = async () => {
     const order = sortType.includes("-") ? "desc" : "asc";
     const sortBy = sortType.replace("-", "");
     const category = categoryId > 0 ? `category=${categoryId}` : "";
     const search = searchValue ? `&search=${searchValue}` : "";
 
-    try {
-      const { data } = await axios.get(
-        `https://62e3efe83c89b95396d4450b.mockapi.io/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-      );
-      dispatch(addItems(data));
-    } catch (error) {
-      console.log(error.message);
-    } finally {
-      setIsLoading(false);
-    }
+    dispatch(
+      fetchPizzas({
+        order,
+        sortBy,
+        category,
+        search,
+        currentPage,
+      })
+    );
 
     window.scrollTo(0, 0);
   };
@@ -98,7 +96,7 @@ function Home() {
 
   useEffect(() => {
     if (!isSearch.current) {
-      fetchPizzas();
+      getPizzas();
     }
 
     isSearch.current = false;
@@ -114,7 +112,18 @@ function Home() {
         <Sort />
       </div>
       <h2 className="content__title">All pizzas</h2>
-      <div className="content__items">{isLoading ? skeleton : items}</div>
+      {status === "error" ? (
+        <div className="content__error-info">
+          <h2>We caught and error 🥺</h2> <br />{" "}
+          <span>Please, try again later, we couldn't load pitszzaz ;( </span> <br />
+          <span>No nom nom nom today</span>
+        </div>
+      ) : (
+        <div className="content__items">
+          {status === "loading" ? skeleton : items}
+        </div>
+      )}
+
       <Pagination currentPage={currentPage} onPageChange={onPageChange} />
     </>
   );
