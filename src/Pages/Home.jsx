@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import qs from "qs";
 
@@ -47,7 +48,11 @@ function Home() {
   const skeleton = [...new Array(9)].map((_, idx) => (
     <Skeleton className="pizza-block" key={idx} />
   ));
-  const items = pizzas.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+  const items = pizzas.map((obj) => (
+    <Link key={obj.id} to={`/pizza/${obj.id}`}>
+      <PizzaBlock {...obj} />
+    </Link>
+  ));
 
   const getPizzas = async () => {
     const order = sortType.includes("-") ? "desc" : "asc";
