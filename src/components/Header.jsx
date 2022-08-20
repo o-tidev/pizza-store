@@ -1,10 +1,13 @@
 import logo from "../assets/img/pizza-logo.svg";
-import { Link } from "react-router-dom";
+
 import Search from "./Search/Search";
+
+import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { cartSelector } from "../redux/slices/cartSlice";
 
 function Header() {
+  const location = useLocation();
   const { items, total } = useSelector(cartSelector);
   const totalCount = items.reduce((sum, item) => sum + item.count, 0);
 
