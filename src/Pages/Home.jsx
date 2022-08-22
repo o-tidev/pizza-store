@@ -12,7 +12,6 @@ import Skeleton from "../components/PizzaBlock/Skeleton";
 import Pagination from "../components/Pagination/Pagination";
 
 import {
-  filterSortSelector,
   setCategoryId,
   setCurrentPage,
   setFilters,

@@ -1,7 +1,5 @@
 import "./scss/app.scss";
-import React from "react";
 
-import Header from "./components/Header";
 import Home from "./Pages/Home";
 import NotFound from "./Pages/NotFound";
 import FullPizza from "./Pages/FullPizza";
