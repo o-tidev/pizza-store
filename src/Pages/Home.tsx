@@ -18,24 +18,24 @@ import {
 } from "../redux/slices/filterSlice";
 import { fetchPizzas, pizzaDataSelector } from "../redux/slices/pizzaSlice";
 
-function Home() {
+const Home: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isSearch = React.useRef(false);
   const isMounted = React.useRef(false);
 
-  const categoryId = useSelector((state) => state.filterSlice.categoryId);
-  const sortType = useSelector((state) => state.filterSlice.sort.sortKey);
-  const currentPage = useSelector((state) => state.filterSlice.currentPage);
-  const { searchValue } = useSelector((state) => state.filterSlice);
+  const categoryId = useSelector((state: any) => state.filterSlice.categoryId);
+  const sortType = useSelector((state: any) => state.filterSlice.sort.sortKey);
+  const currentPage = useSelector((state: any) => state.filterSlice.currentPage);
+  const { searchValue } = useSelector((state: any) => state.filterSlice);
 
   const { pizzas, status } = useSelector(pizzaDataSelector);
 
-  const onCategorylClick = (idx) => {
+  const onCategorylClick = (idx: number) => {
     dispatch(setCategoryId(idx));
   };
 
-  const onPageChange = (num) => {
+  const onPageChange = (num: number) => {
     dispatch(setCurrentPage(num));
   };
 
@@ -45,9 +45,10 @@ function Home() {
   // const [isLoading, setIsLoading] = React.useState(true);
 
   const skeleton = [...new Array(9)].map((_, idx) => (
+    // @ts-ignore
     <Skeleton className="pizza-block" key={idx} />
   ));
-  const items = pizzas.map((obj) => (
+  const items = pizzas.map((obj: any) => (
     <Link key={obj.id} to={`/pizza/${obj.id}`}>
       <PizzaBlock {...obj} />
     </Link>
@@ -60,6 +61,7 @@ function Home() {
     const search = searchValue ? `&search=${searchValue}` : "";
 
     dispatch(
+      // @ts-ignore
       fetchPizzas({
         order,
         sortBy,
@@ -134,6 +136,6 @@ function Home() {
       <Pagination currentPage={currentPage} onPageChange={onPageChange} />
     </>
   );
-}
+};
 
 export default Home;

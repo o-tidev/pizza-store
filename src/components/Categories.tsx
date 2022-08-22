@@ -1,10 +1,15 @@
 import React from "react";
 
-function Categories({ categoryId, onCategorylClick }) {
+type CategoriesProps = {
+  categoryId: number;
+  onCategorylClick: any;
+};
+
+const Categories: React.FC<CategoriesProps> = ({ categoryId, onCategorylClick }) => {
   const [activeIndex, setActiveIndex] = React.useState(0);
   const categories = ["All", "Meat", "Veggie", "Grill", "Spicy", "Baked"];
 
-  function onCategoryClick(idx) {
+  function onCategoryClick(idx: number) {
     setActiveIndex(idx);
   }
 

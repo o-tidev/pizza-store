@@ -2,7 +2,12 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { filterSelector, setSort } from "../redux/slices/filterSlice";
 
-export const list = [
+type SortItem = {
+  name: string;
+  sortKey: string;
+};
+
+export const list: SortItem[] = [
   {
     name: "popularity (asc)",
     sortKey: "rating",
@@ -32,17 +37,17 @@ export const list = [
 function Sort() {
   const dispatch = useDispatch();
   const sort = useSelector(filterSelector);
-  const sortReference = React.useRef();
+  const sortReference = React.useRef<HTMLDivElement>(null);
 
   const [isOpened, setIsOpened] = React.useState(false);
 
-  let setActive = (object) => {
+  let setActive = (object: SortItem) => {
     dispatch(setSort(object));
     setIsOpened(!isOpened);
   };
 
   React.useEffect(() => {
-    const outsideClickHandler = (e) => {
+    const outsideClickHandler = (e: any) => {
       if (!e.path.includes(sortReference.current)) {
         setIsOpened(false);
         console.log("clickie");

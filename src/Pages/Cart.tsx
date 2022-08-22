@@ -7,15 +7,18 @@ import CartEmpty from "../components/CartEmpty";
 import CartItem from "../components/CartItem";
 import { clearItems } from "../redux/slices/cartSlice";
 
-function Cart() {
+const Cart: React.FC = () => {
   const onClickClear = () => {
     if (window.confirm("Are you sure you want to clear the cart?")) {
       dispatch(clearItems());
     }
   };
   const dispatch = useDispatch();
-  const { items, total } = useSelector((state) => state.cartSlice);
-  const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+  const { items, total } = useSelector((state: any) => state.cartSlice);
+  const totalCount = items.reduce(
+    (sum: number, item: any) => sum + item.count,
+    0
+  );
 
   if (!total) {
     return <CartEmpty></CartEmpty>;
@@ -100,7 +103,7 @@ function Cart() {
             </div>
           </div>
           <div className="content__items__cart">
-            {items.map((item) => (
+            {items.map((item: any) => (
               <CartItem key={item.id} {...item} />
             ))}
           </div>
@@ -147,6 +150,6 @@ function Cart() {
       </div>
     </div>
   );
-}
+};
 
 export default Cart;
