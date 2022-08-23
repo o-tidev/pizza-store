@@ -4,13 +4,12 @@ import ReactPaginate from "react-paginate";
 
 type Pagination = {
   currentPage: number;
-  onPageChange: any;
-}
+  onPageChange: (page: number) => void;
+};
 
 const Pagination: React.FC<Pagination> = ({ currentPage, onPageChange }) => {
   return (
     <>
-      
       {/* HERE GOES YOUR HTML */}
 
       <ReactPaginate
@@ -25,6 +24,6 @@ const Pagination: React.FC<Pagination> = ({ currentPage, onPageChange }) => {
       />
     </>
   );
-}
+};
 
 export default Pagination;

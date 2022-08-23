@@ -22,7 +22,7 @@ const Search: React.FC = () => {
     []
   );
 
-  const onRequest = (event: any) => {
+  const onRequest = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLocalValue(event.target.value);
     onUpdateValue(event.target.value);
   };

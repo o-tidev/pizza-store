@@ -2,10 +2,13 @@ import React from "react";
 
 type CategoriesProps = {
   categoryId: number;
-  onCategorylClick: any;
+  onCategorylClick: (idx: number) => void;
 };
 
-const Categories: React.FC<CategoriesProps> = ({ categoryId, onCategorylClick }) => {
+const Categories: React.FC<CategoriesProps> = ({
+  categoryId,
+  onCategorylClick,
+}) => {
   const [activeIndex, setActiveIndex] = React.useState(0);
   const categories = ["All", "Meat", "Veggie", "Grill", "Spicy", "Baked"];
 
@@ -30,6 +33,6 @@ const Categories: React.FC<CategoriesProps> = ({ categoryId, onCategorylClick })
       </ul>
     </div>
   );
-}
+};
 
 export default Categories;
