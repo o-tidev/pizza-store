@@ -34,10 +34,6 @@ export const list: SortItem[] = [
   },
 ];
 
-type PopupClickType = MouseEvent & {
-  path: Node[];
-};
-
 function Sort() {
   const dispatch = useDispatch();
   const sort = useSelector(filterSelector);
@@ -45,7 +41,7 @@ function Sort() {
 
   const [isOpened, setIsOpened] = React.useState(false);
 
-  let setActive = (object: SortItem) => {
+  let setActive = (object: any) => {
     dispatch(setSort(object));
     setIsOpened(!isOpened);
   };
@@ -53,8 +49,11 @@ function Sort() {
   React.useEffect(() => {
     const outsideClickHandler = (e: MouseEvent) => {
       // is there a better way to check if it is a valid value?
-      const event = e as PopupClickType;
-      if (sortReference.current && !event.path.includes(sortReference.current)) {
+      const event = e as any;
+      if (
+        sortReference.current &&
+        !event.path.includes(sortReference.current)
+      ) {
         setIsOpened(false);
         console.log("clickie");
       }
