@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 import qs from "qs";
 
@@ -27,7 +26,9 @@ const Home: React.FC = () => {
 
   const categoryId = useSelector((state: any) => state.filterSlice.categoryId);
   const sortType = useSelector((state: any) => state.filterSlice.sort.sortKey);
-  const currentPage = useSelector((state: any) => state.filterSlice.currentPage);
+  const currentPage = useSelector(
+    (state: any) => state.filterSlice.currentPage
+  );
   const { searchValue } = useSelector((state: any) => state.filterSlice);
 
   const { pizzas, status } = useSelector(pizzaDataSelector);
@@ -40,20 +41,11 @@ const Home: React.FC = () => {
     dispatch(setCurrentPage(num));
   };
 
-  // const { searchValue } = React.useContext(AppContext);
-
-  // const [pizzas, setPizzas] = React.useState([]);
-  // const [isLoading, setIsLoading] = React.useState(true);
-
   const skeleton = [...new Array(9)].map((_, idx) => (
     // @ts-ignore
     <Skeleton className="pizza-block" key={idx} />
   ));
-  const items = pizzas.map((obj: any) => (
-    <Link key={obj.id} to={`/pizza/${obj.id}`}>
-      <PizzaBlock {...obj} />
-    </Link>
-  ));
+  const items = pizzas.map((obj: any) => <PizzaBlock {...obj} />);
 
   const getPizzas = async () => {
     const order = sortType.includes("-") ? "desc" : "asc";
